@@ -1,11 +1,17 @@
 /*Variable names for pins*/
 //button numbers assigned to pin number
-const int button1 = 8;
-const int button2 = 10;
+const int trig1 = 8;
+const int echo1 = 10;
 
+const int trig2 = 8;
+const int echo2 = 10;
+
+const int InteruptPin = ; // trigger pin to interupt program 
 //2 distance variables of type int
-int forward_sensor;
-int forward_ground_sensor;
+int time1;
+int time2;
+volatile int distPath;
+volatile int distFall;
 
 //button state will be used to run a program
 //assigned to 2 buttons
@@ -14,16 +20,40 @@ int previous_state = 0;
 
 void setup() {
   //declaring the buttons as inputs
+  pinMode(trig1, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echo1, INPUT); // Sets the echoPin as an Input
+  pinMode(trig2, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echo1, INPUT); // Sets the echoPin as an Input
   pinMode(button1, INPUT);
   pinMode(button2, INPUT);
 }
 
 void loop() {
-  //see if any buttons have been pressed
-  if(digitalRead(button1) == HIGH)
-    button_state = 1;
-  if(digitalRead(button2) == HIGH)
-    button_state = 2;
+
+    digitalWrite(trig1, LOW);// Clears the trigPin
+    digitalWrite(trig2, LOW);// Clears the trigPin
+    delayMicroseconds(2);
+    digitalWrite(trig1, HIGH);// Sets the trigPin on HIGH state for 10 micro seconds
+    digitalWrite(trig1, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    // Reads the echoPin, returns the sound wave travel time in microseconds
+    time1 = pulseIn(echo1, HIGH);
+    time2 = pulseIn(echo2, HIGH);
+    // Calculating the distance
+    distPath= time1*0.034/2;
+    distFall= time2*0.034/2;
+    // Prints the distance on the Serial Monitor
+    Serial.print("DistPath: ");
+     Serial.print("           DistPath: ");
+     Serial.print("                      ");
+    Serial.println(distPath);
+    Serial.println(distFall);
+      //see if any buttons have been pressed
+      if(digitalRead(button1) == HIGH)
+        button_state = 1;
+      if(digitalRead(button2) == HIGH)
+        button_state = 2;
 
   //see if we start a new function
   if(button_state != previous_state){
